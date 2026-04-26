@@ -1,0 +1,471 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum FirmType {
+  INVESTMENT_BANK
+  RX_ADVISORY
+  PRIVATE_CREDIT
+  HEDGE_FUND
+  SPECIAL_SITUATIONS
+  PRIVATE_EQUITY
+  ASSET_MANAGER
+  LAW_FIRM
+  RECRUITER
+  UCHICAGO
+  OTHER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Warmth {
+  COLD
+  LUKEWARM
+  WARM
+  STRONG
+}
+
+enum RecruitingRelevance {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum CoverageStrength {
+  NONE
+  WEAK
+  MEDIUM
+  STRONG
+}
+
+enum FirmTargetStatus {
+  TARGET
+  ACTIVE
+  WATCHLIST
+  DEPRIORITIZED
+  CLOSED
+}
+
+enum ContactStatus {
+  ACTIVE
+  DORMANT
+  DO_NOT_CONTACT
+  ARCHIVED
+}
+
+enum RelationshipStage {
+  TARGET_IDENTIFIED
+  OUTREACH_NEEDED
+  INITIAL_OUTREACH_SENT
+  FOLLOW_UP_NEEDED
+  REPLIED
+  CALL_SCHEDULED
+  CALL_COMPLETED
+  WARM_RELATIONSHIP
+  STRONG_ADVOCATE
+  DORMANT
+  CLOSED_NO_RESPONSE
+  DO_NOT_CONTACT
+}
+
+enum ConversationType {
+  COFFEE_CHAT
+  PHONE_CALL
+  ZOOM_CALL
+  IN_PERSON_MEETING
+  UCG_SPEAKER_CONVERSATION
+  RECRUITING_CALL
+  INFORMAL_EVENT_CONVERSATION
+  EMAIL_ONLY_INTERACTION
+  OTHER
+}
+
+enum Medium {
+  EMAIL
+  PHONE
+  ZOOM
+  GOOGLE_MEET
+  IN_PERSON
+  LINKEDIN
+  TEXT
+  OTHER
+}
+
+enum ParticipantRole {
+  PRIMARY
+  PARTICIPANT
+  INTRODUCER
+  HOST
+  SPEAKER
+  OTHER
+}
+
+enum AiProcessingStatus {
+  NOT_PROCESSED
+  PROCESSING
+  PROCESSED
+  MOCK_PROCESSED
+  FAILED
+  REVIEWED
+}
+
+enum CampaignType {
+  COLD_NETWORKING
+  WARM_INTRO
+  SPEAKER_OUTREACH
+  RECRUITING_FOLLOW_UP
+  POST_CALL_THANK_YOU
+  LONG_TERM_RELATIONSHIP_MAINTENANCE
+  REFERRAL_REQUEST
+  EVENT_FOLLOW_UP
+  OTHER
+}
+
+enum CampaignStatus {
+  NOT_STARTED
+  INITIAL_OUTREACH_SENT
+  FOLLOW_UP_1_DUE
+  FOLLOW_UP_1_SENT
+  FOLLOW_UP_2_DUE
+  FOLLOW_UP_2_SENT
+  REPLIED
+  CALL_SCHEDULED
+  CALL_COMPLETED
+  CONVERTED_TO_RELATIONSHIP
+  PAUSED
+  CLOSED_NO_RESPONSE
+  DO_NOT_CONTACT
+}
+
+enum TouchType {
+  INITIAL_OUTREACH
+  FOLLOW_UP_1
+  FOLLOW_UP_2
+  THANK_YOU
+  SCHEDULING_REPLY
+  RESCHEDULE
+  POST_CALL_FOLLOW_UP
+  LONG_TERM_CHECK_IN
+  RECRUITING_UPDATE
+  REFERRAL_ASK
+  SPEAKER_INVITATION
+  OTHER
+}
+
+enum Channel {
+  EMAIL
+  LINKEDIN
+  TEXT
+  PHONE
+  IN_PERSON
+  OTHER
+}
+
+enum Direction {
+  OUTBOUND
+  INBOUND
+}
+
+enum TouchStatus {
+  DRAFTED
+  SENT
+  RECEIVED
+  NEEDS_REPLY
+  NO_REPLY
+  ARCHIVED
+}
+
+enum TaskType {
+  SEND_INITIAL_OUTREACH
+  SEND_FOLLOW_UP
+  SEND_THANK_YOU
+  SCHEDULE_CALL
+  PREPARE_FOR_CALL
+  UPDATE_NOTES
+  RECONNECT_LATER
+  ASK_FOR_INTRO
+  SEND_RESOURCE
+  NO_ACTION_NEEDED
+  OTHER
+}
+
+enum TaskStatus {
+  OPEN
+  SNOOZED
+  DONE
+  CANCELLED
+}
+
+enum IntegrationType {
+  GMAIL
+  GOOGLE_CALENDAR
+  GOOGLE_CONTACTS
+  AI_DRAFT_QUEUE
+  LINKEDIN
+  OTHER
+}
+
+enum IntegrationStatus {
+  NOT_CONNECTED
+  COMING_LATER
+  CONNECTED
+  ERROR
+  DISABLED
+}
+
+model Contact {
+  id                   String                 @id @default(cuid())
+  firstName            String
+  lastName             String
+  fullName             String
+  primaryEmail         String?
+  secondaryEmail       String?
+  phone                String?
+  linkedinUrl          String?
+  currentFirmId        String?
+  currentTitle         String?
+  currentGroup         String?
+  location             String?
+  timezone             String?
+  schoolOrAffiliation  String?
+  source               String?
+  priority             Priority               @default(MEDIUM)
+  warmth               Warmth                 @default(COLD)
+  recruitingRelevance  RecruitingRelevance    @default(MEDIUM)
+  relationshipStage    RelationshipStage      @default(TARGET_IDENTIFIED)
+  status               ContactStatus          @default(ACTIVE)
+  personalHooks        String?
+  generalNotes         String?
+  lastTouchAt          DateTime?
+  nextTouchAt          DateTime?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  currentFirm          Firm?                  @relation("CurrentFirmContacts", fields: [currentFirmId], references: [id], onDelete: SetNull)
+  positions            Position[]
+  conversationParticipants ConversationParticipant[]
+  primaryConversations Conversation[]         @relation("PrimaryContactConversations")
+  outreachCampaigns    OutreachCampaign[]
+  outreachTouches      OutreachTouch[]
+  tasks                Task[]
+  tags                 ContactTag[]
+
+  @@index([currentFirmId])
+  @@index([fullName])
+  @@index([priority, warmth, relationshipStage])
+  @@index([lastTouchAt])
+  @@index([nextTouchAt])
+}
+
+model Firm {
+  id                  String                @id @default(cuid())
+  name                String                @unique
+  firmType            FirmType              @default(OTHER)
+  strategy            String?
+  priority            Priority              @default(MEDIUM)
+  recruitingRelevance RecruitingRelevance   @default(MEDIUM)
+  coverageStrength    CoverageStrength      @default(NONE)
+  targetStatus        FirmTargetStatus      @default(TARGET)
+  website             String?
+  notes               String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  contacts            Contact[]             @relation("CurrentFirmContacts")
+  positions           Position[]
+  conversations       Conversation[]
+  outreachCampaigns   OutreachCampaign[]
+  tasks               Task[]
+
+  @@index([firmType, priority, coverageStrength])
+}
+
+model Position {
+  id          String    @id @default(cuid())
+  contactId   String
+  firmId      String
+  title       String
+  groupName   String?
+  location    String?
+  startDate   DateTime?
+  endDate     DateTime?
+  isCurrent   Boolean   @default(false)
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  contact     Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  firm        Firm      @relation(fields: [firmId], references: [id], onDelete: Cascade)
+
+  @@index([contactId, isCurrent])
+  @@index([firmId])
+}
+
+model Conversation {
+  id                       String                    @id @default(cuid())
+  title                    String
+  conversationType         ConversationType
+  medium                   Medium
+  happenedAt               DateTime
+  durationMinutes          Int?
+  primaryContactId         String?
+  firmId                   String?
+  summary                  String?
+  keyTopics                String?
+  adviceGiven              String?
+  personalHooks            String?
+  firmInsights             String?
+  recruitingInsights       String?
+  followUpAngle            String?
+  nextAction               String?
+  suggestedFollowUpDate    DateTime?
+  relationshipWarmthAfter  Warmth?
+  rawNotes                 String?
+  cleanNotes               String?
+  rawTranscript            String?
+  aiProcessed              Boolean                   @default(false)
+  aiProcessingStatus       AiProcessingStatus        @default(NOT_PROCESSED)
+  aiOutputJson             Json?
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  participants             ConversationParticipant[]
+  tasks                    Task[]
+  primaryContact           Contact?                  @relation("PrimaryContactConversations", fields: [primaryContactId], references: [id], onDelete: SetNull)
+  firm                     Firm?                     @relation(fields: [firmId], references: [id], onDelete: SetNull)
+
+  @@index([happenedAt])
+  @@index([primaryContactId])
+  @@index([firmId])
+  @@index([aiProcessed])
+}
+
+model ConversationParticipant {
+  id             String          @id @default(cuid())
+  conversationId String
+  contactId      String
+  role           ParticipantRole @default(PARTICIPANT)
+  notes          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  conversation   Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  contact        Contact         @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, contactId])
+  @@index([contactId])
+}
+
+model OutreachCampaign {
+  id                 String          @id @default(cuid())
+  name               String
+  contactId          String
+  firmId             String?
+  campaignType       CampaignType
+  goal               String?
+  status             CampaignStatus  @default(NOT_STARTED)
+  priority           Priority        @default(MEDIUM)
+  startedAt          DateTime?
+  lastTouchAt        DateTime?
+  nextPlannedTouchAt DateTime?
+  outcome            String?
+  notes              String?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  contact            Contact         @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  firm               Firm?           @relation(fields: [firmId], references: [id], onDelete: SetNull)
+  touches            OutreachTouch[]
+  tasks              Task[]
+
+  @@index([contactId])
+  @@index([firmId])
+  @@index([status, nextPlannedTouchAt])
+}
+
+model OutreachTouch {
+  id               String           @id @default(cuid())
+  campaignId       String
+  contactId        String
+  touchType        TouchType
+  channel          Channel
+  direction        Direction        @default(OUTBOUND)
+  occurredAt       DateTime
+  subject          String?
+  messageBody      String?
+  status           TouchStatus      @default(SENT)
+  responseReceived Boolean          @default(false)
+  notes            String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  campaign         OutreachCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contact          Contact          @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId, occurredAt])
+  @@index([contactId, occurredAt])
+}
+
+model Task {
+  id             String           @id @default(cuid())
+  title          String
+  contactId      String?
+  firmId         String?
+  campaignId     String?
+  conversationId String?
+  taskType       TaskType
+  dueDate        DateTime?
+  priority       Priority         @default(MEDIUM)
+  status         TaskStatus       @default(OPEN)
+  notes          String?
+  createdByAi    Boolean          @default(false)
+  completedAt    DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  contact        Contact?         @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  firm           Firm?            @relation(fields: [firmId], references: [id], onDelete: SetNull)
+  campaign       OutreachCampaign? @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  conversation   Conversation?    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([dueDate, status])
+  @@index([contactId])
+  @@index([firmId])
+  @@index([campaignId])
+  @@index([conversationId])
+}
+
+model Tag {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  color     String       @default("slate")
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  contacts  ContactTag[]
+}
+
+model ContactTag {
+  id        String   @id @default(cuid())
+  contactId String
+  tagId     String
+  createdAt DateTime @default(now())
+  contact   Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([contactId, tagId])
+  @@index([tagId])
+}
+
+model IntegrationStub {
+  id              String            @id @default(cuid())
+  integrationType IntegrationType
+  status          IntegrationStatus  @default(COMING_LATER)
+  configJson      Json?
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@unique([integrationType])
+}

@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 20% 98%;
+  --foreground: 222 28% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 28% 10%;
+  --border: 214 18% 88%;
+  --muted: 210 20% 94%;
+  --muted-foreground: 215 12% 42%;
+  --primary: 215 30% 16%;
+  --primary-foreground: 0 0% 100%;
+  --destructive: 0 74% 48%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+.dark {
+  --background: 222 26% 8%;
+  --foreground: 210 18% 94%;
+  --card: 222 22% 11%;
+  --card-foreground: 210 18% 94%;
+  --border: 218 16% 22%;
+  --muted: 221 18% 16%;
+  --muted-foreground: 216 12% 66%;
+  --primary: 210 18% 92%;
+  --primary-foreground: 222 28% 10%;
+  --destructive: 0 62% 42%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+input,
+select,
+textarea {
+  outline: none;
+}
+
+.dense-grid {
+  display: grid;
+  gap: 0.75rem;
+}
