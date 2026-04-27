@@ -1,0 +1,12 @@
+- title: v0.1 Foundation
+  description: Deployable private app with Supabase, Prisma, password gate, dashboard, nav, and Settings health.
+- title: v0.2 Gmail Drafts
+  description: Gmail OAuth and approved Gmail draft creation with no auto-send.
+- title: v0.3 Campaign Workflow
+  description: Background and templates plus generated 4-email sequence workflow.
+- title: v0.4 Background Automation
+  description: Campaign approval workflow, scheduling readiness, and automation scaffolding.
+- title: v0.5 Gmail Scanner
+  description: Gmail scanning and campaign updates for replies, bounces, OOO, and scheduling intent.
+- title: v1.0 Daily Driver
+  description: Reliable daily workflow across dashboard, campaigns, Gmail, calls, transcripts, and memory.
