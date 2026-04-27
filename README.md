@@ -1,4 +1,4 @@
-# NetworkOS
+# Networking Machine
 
 Private personal CRM for finance recruiting, alumni networking, investor and banker relationship tracking, UChicago Credit Group outreach, speaker outreach, and long-term relationship management.
 
@@ -27,8 +27,9 @@ npm install
 2. Create `.env` from `.env.example` and set:
 
 ```bash
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/networkos?schema=public"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/networking_machine?schema=public"
 OPENAI_API_KEY=""
+APP_PASSWORD=""
 ```
 
 3. Generate Prisma client, create the database schema, and seed realistic sample data:
@@ -57,3 +58,7 @@ Gmail, Google Calendar, Google Contacts, LinkedIn, and AI email draft queue inte
 - `lib/ai/draftQueue.ts`
 
 No OAuth scopes are requested, no Gmail sync runs, and no email is sent.
+
+## Privacy Gate
+
+Set `APP_PASSWORD` in Vercel to require a password before anyone can access the CRM. If `APP_PASSWORD` is blank or missing, the app stays open.
