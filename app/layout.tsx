@@ -4,7 +4,7 @@ import { Shell } from "@/components/app/shell";
 
 export const metadata: Metadata = {
   title: "Networking Machine",
-  description: "Private personal CRM for finance recruiting and professional networking"
+  description: "Private AI outreach command center for finance recruiting and professional networking"
 };
 
 export const dynamic = "force-dynamic";
