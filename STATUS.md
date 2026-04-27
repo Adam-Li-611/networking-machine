@@ -99,6 +99,7 @@ Test plan:
 Current test evidence:
 
 - Primary nav route file check passed for Dashboard, People, Campaigns, Draft Review, Gmail, Templates, Background, Calls, Lead Research, and Settings.
+- Password gate signed-cookie helper check passed: valid signed cookie accepted, plain `ok` cookie rejected, wrong-password signature rejected.
 - ASCII check passed for Segment 1 edited files.
 - Gmail boundary search found only existing stubs and new placeholder/status copy; no OAuth, scopes, Gmail API calls, draft creation, scanner, or auto-send implementation was added.
 - `npm run build` could not run locally because `npm` is not installed in this environment (`zsh: command not found: npm`).
@@ -118,6 +119,7 @@ Exit criteria:
 - Identified Settings system health as the second foundation gap.
 - Added missing primary navigation route files.
 - Replaced Settings with system health and Segment 1 gate status.
+- Hardened the password gate so middleware verifies a signed auth cookie instead of trusting a plain `ok` cookie value.
 - Recorded local verification evidence and package-manager blocker.
 - Created Segment 0 governance plan.
 - Created Segment 1 foundation plan.
