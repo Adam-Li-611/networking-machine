@@ -69,7 +69,7 @@ export default async function SettingsPage() {
       title: "Password Gate",
       icon: ShieldCheck,
       state: appPasswordReady ? ("READY" as HealthState) : ("MISSING" as HealthState),
-      detail: appPasswordReady ? "Private routes protected" : "APP_PASSWORD is not set"
+      detail: appPasswordReady ? "Signed auth cookie enabled" : "APP_PASSWORD is not set"
     },
     {
       title: "OpenAI",
