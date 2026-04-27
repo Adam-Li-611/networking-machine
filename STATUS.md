@@ -2,9 +2,9 @@
 
 ## Active Segment
 
-Segment 0: Project Governance And Tracking
+Segment 1: Foundation
 
-Current version: `v0.0.0` planning baseline
+Current version: `v0.1.0` foundation work in progress
 
 ## Segment 0 Plan
 
@@ -41,10 +41,10 @@ Status:
 - Local starter issue plan: complete in `docs/GITHUB_TRACKING.md`.
 - Live GitHub target repo: identified as `Adam-Li-611/networking-machine`.
 - Live GitHub branch creation: complete for `codex/segment-0-governance`.
-- Live GitHub PR creation: pending governance file import.
+- Live GitHub PR creation: complete for Segment 0 PR #1.
 - Live GitHub labels: tracked in `.github/labels.yml`; repository label creation still needs GitHub UI, GitHub CLI, or a connector tool that supports repository labels.
 - Live GitHub milestones: tracked in `.github/milestones.yml`; repository milestone creation still needs GitHub UI, GitHub CLI, or a connector tool that supports milestones.
-- Live GitHub segment issues: pending.
+- Live GitHub segment issues: complete for Segment 0 through Segment 9.
 
 ## Segment 1 Foundation Plan
 
@@ -60,6 +60,13 @@ Build scope:
 - Build or adapt the Dashboard as the operational home.
 - Ensure primary nav routes exist for Dashboard, People, Campaigns, Draft Review, Gmail, Templates, Background, Calls, Lead Research, and Settings.
 - Build Settings system health with app version, database connectivity, environment configuration status, mock mode status, and Gmail status placeholder.
+
+Current implementation pass:
+
+- Add missing primary navigation routes for People, Draft Review, Gmail, Templates, Background, Calls, and Lead Research.
+- Keep existing Contacts/Firms/Conversations/Tasks pages available while the UX is reoriented around workflow areas.
+- Replace Settings content with system health checks for app version, database, password gate, OpenAI configuration, Gmail placeholder status, mock mode, Vercel environment, and required environment variables.
+- Preserve Gmail as a placeholder only; no OAuth, scopes, tokens, draft creation, send behavior, or scanner.
 
 Non-goals:
 
@@ -89,6 +96,14 @@ Test plan:
 - Manual verification of all primary nav routes
 - Manual verification of Settings system health
 
+Current test evidence:
+
+- Primary nav route file check passed for Dashboard, People, Campaigns, Draft Review, Gmail, Templates, Background, Calls, Lead Research, and Settings.
+- Password gate signed-cookie helper check passed: valid signed cookie accepted, plain `ok` cookie rejected, wrong-password signature rejected.
+- ASCII check passed for Segment 1 edited files.
+- Gmail boundary search found only existing stubs and new placeholder/status copy; no OAuth, scopes, Gmail API calls, draft creation, scanner, or auto-send implementation was added.
+- `npm run build` could not run locally because `npm` is not installed in this environment (`zsh: command not found: npm`).
+
 Exit criteria:
 
 - Segment 1 acceptance criteria pass.
@@ -99,10 +114,18 @@ Exit criteria:
 
 ## Meaningful Change Log
 
+- Started Segment 1 foundation implementation.
+- Identified missing primary navigation routes as the first foundation gap.
+- Identified Settings system health as the second foundation gap.
+- Added missing primary navigation route files.
+- Replaced Settings with system health and Segment 1 gate status.
+- Hardened the password gate so middleware verifies a signed auth cookie instead of trusting a plain `ok` cookie value.
+- Recorded local verification evidence and package-manager blocker.
 - Created Segment 0 governance plan.
 - Created Segment 1 foundation plan.
 - Created local GitHub label and milestone manifests.
 - Created local starter issue tracking plan.
 - Identified target GitHub repo: `https://github.com/Adam-Li-611/networking-machine`.
 - Confirmed GitHub connector write authorization by creating `codex/segment-0-governance`.
+- Opened Segment 0 PR #1 and created Segment 0 through Segment 9 tracking issues.
 - Recorded that live GitHub label and milestone creation still need GitHub UI, GitHub CLI, or a connector tool that supports those repository mutations.

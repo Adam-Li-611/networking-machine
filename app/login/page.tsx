@@ -23,7 +23,7 @@ export default async function LoginPage({
             <LockKeyhole className="h-4 w-4" />
           </div>
           <CardTitle>Networking Machine</CardTitle>
-          <p className="text-sm text-muted-foreground">Enter the app password to open your private CRM.</p>
+          <p className="text-sm text-muted-foreground">Enter the app password to open your private command center.</p>
         </CardHeader>
         <CardContent>
           <form action={loginAction} className="grid gap-3">
