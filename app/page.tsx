@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { CoverageChart } from "@/components/dashboard/coverage-chart";
 import { PageHeader } from "@/components/page-header";
 
+export const dynamic = "force-dynamic";
+
 function ListCard({
   title,
   href,
