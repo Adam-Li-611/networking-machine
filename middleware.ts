@@ -1,8 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { isValidAuthCookieValue } from "@/lib/auth-cookie";
 
 const PUBLIC_PATHS = ["/login"];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const appPassword = process.env.APP_PASSWORD;
 
@@ -19,7 +20,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const isAuthenticated = request.cookies.get("networking_machine_auth")?.value === "ok";
+  const isAuthenticated = await isValidAuthCookieValue(request.cookies.get("networking_machine_auth")?.value, appPassword);
   if (isAuthenticated) {
     return NextResponse.next();
   }
