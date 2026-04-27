@@ -1,6 +1,43 @@
 # Networking Machine
 
-Private personal CRM for finance recruiting, alumni networking, investor and banker relationship tracking, UChicago Credit Group outreach, speaker outreach, and long-term relationship management.
+Private, hosted, single-user Gmail-connected AI outreach command center for finance recruiting and professional networking.
+
+Networking Machine is not a generic CRM. It is a workflow machine for moving from a lead to an approved outreach sequence, Gmail drafts, reply detection, call prep, transcript processing, memory updates, and future follow-up.
+
+## Product Loop
+
+1. Lead or person identified.
+2. Campaign created for that person.
+3. AI drafts a 4-email sequence.
+4. Adam reviews, edits, and approves.
+5. The app creates Gmail drafts.
+6. Later, approved emails can be scheduled and sent on cadence.
+7. Gmail scanning detects replies, bounces, out-of-office messages, and scheduling intent.
+8. Campaigns pause or update based on real signals.
+9. Call prep is generated.
+10. Notes or transcripts update person memory and future follow-up cadence.
+
+## Safety Rules
+
+- Never auto-reply to people.
+- Never send unapproved outreach.
+- Start with Gmail draft creation before any auto-send behavior.
+- Use progressive Gmail scopes: draft or compose first, scan and send later.
+- Do not use LinkedIn scraping or logged-in browser automation.
+- Design for personal Gmail fallback and future OAuth verification or Google Workspace admin approval.
+
+## Primary Product Areas
+
+- Dashboard
+- People
+- Campaigns
+- Draft Review
+- Gmail
+- Templates
+- Background
+- Calls
+- Lead Research
+- Settings
 
 ## Stack
 
@@ -8,23 +45,39 @@ Private personal CRM for finance recruiting, alumni networking, investor and ban
 - TypeScript
 - Tailwind CSS
 - shadcn-style local UI components
-- Prisma ORM
-- PostgreSQL / Supabase-compatible `DATABASE_URL`
+- Prisma
+- PostgreSQL or Supabase
 - Zod validation
-- React Hook Form dependency included for richer form flows
-- TanStack Table for dense contact tables
-- Recharts dashboard coverage chart
-- Lucide icons
+- OpenAI API
+- Gmail API via Google OAuth
+- Vercel deployment
 
-## Setup
+## Governance
 
-1. Install dependencies:
+This rebuild is organized by segments. Each segment must have a written plan in `STATUS.md` before coding begins. Each meaningful change must update `STATUS.md`. Released segments must update `CHANGELOG.md` and `docs/VERSION_LOG.md`. Major product or architecture choices must be logged in `docs/DECISIONS.md`.
+
+Current governance docs:
+
+- `ROADMAP.md`
+- `STATUS.md`
+- `CHANGELOG.md`
+- `docs/PRODUCT_SPEC.md`
+- `docs/ARCHITECTURE.md`
+- `docs/DECISIONS.md`
+- `docs/VERSION_LOG.md`
+- `docs/TEST_PLAN.md`
+
+GitHub issue and pull request templates live under `.github/`.
+
+## Local Setup
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Create `.env` from `.env.example` and set:
+Create `.env` from `.env.example` and set at minimum:
 
 ```bash
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/networking_machine?schema=public"
@@ -32,33 +85,19 @@ OPENAI_API_KEY=""
 APP_PASSWORD=""
 ```
 
-3. Generate Prisma client, create the database schema, and seed realistic sample data:
+Generate Prisma client and apply the schema:
 
 ```bash
 npm run prisma:generate
 npm run prisma:migrate
-npm run prisma:seed
 ```
 
-4. Run locally:
+Run locally:
 
 ```bash
 npm run dev
 ```
 
-## AI Transcript Processing
+## Current Build Boundary
 
-`/api/ai/process-transcript` and the conversation detail page call a server-side transcript processor. If `OPENAI_API_KEY` is configured, it calls OpenAI server-side. If no key is present, it uses a deterministic mock processor and marks the conversation as mock processed.
-
-## Intentional Stubs
-
-Gmail, Google Calendar, Google Contacts, LinkedIn, and AI email draft queue integrations are intentionally not active in v1. Placeholder service interfaces live in:
-
-- `lib/integrations/gmail.ts`
-- `lib/ai/draftQueue.ts`
-
-No OAuth scopes are requested, no Gmail sync runs, and no email is sent.
-
-## Privacy Gate
-
-Set `APP_PASSWORD` in Vercel to require a password before anyone can access the CRM. If `APP_PASSWORD` is blank or missing, the app stays open.
+The current active work is Segment 0 governance plus the Segment 1 foundation plan. Gmail implementation must not begin until the tracker, roadmap, version log, status process, and foundation plan are in place.
