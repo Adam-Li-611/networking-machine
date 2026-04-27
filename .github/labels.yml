@@ -1,0 +1,33 @@
+- name: segment-0-governance
+  color: "6E7781"
+  description: Project governance, tracking, docs, labels, milestones, and process setup.
+- name: segment-1-gmail-drafts
+  color: "0E8A16"
+  description: Foundation work leading into Gmail drafts-first readiness.
+- name: segment-2-templates-background
+  color: "1D76DB"
+  description: Reusable background profile and sequence template system.
+- name: segment-3-campaigns
+  color: "5319E7"
+  description: Campaign approval workflow and lifecycle states.
+- name: segment-4-scheduler
+  color: "FBCA04"
+  description: Approved sequence scheduling and send-attempt logging.
+- name: segment-5-gmail-scanner
+  color: "D93F0B"
+  description: Gmail reply, bounce, no-thanks, OOO, and scheduling-intent scanner.
+- name: segment-6-calls-transcripts
+  color: "BFDADC"
+  description: Calls, prep briefs, transcript processing, and memory updates.
+- name: priority-critical
+  color: "B60205"
+  description: Blocks safety, data integrity, deployment, or core workflow use.
+- name: priority-high
+  color: "D93F0B"
+  description: Important for the active or next segment.
+- name: blocked
+  color: "000000"
+  description: Cannot proceed until an external dependency or decision is resolved.
+- name: needs-review
+  color: "FBCA04"
+  description: Needs human review before implementation, merge, or release.
