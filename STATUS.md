@@ -4,7 +4,11 @@
 
 Segment 1: Foundation
 
-Current version: `v0.1.0` foundation work in progress
+Current version: `v0.1.0` foundation shipped to production
+
+Next segment: Segment 2 Gmail Drafts-First Spine, not started.
+
+Segment 2 may start only after Adam or a temporary verification method confirms the authenticated Dashboard and Settings health page in production.
 
 ## Segment 0 Plan
 
@@ -49,6 +53,14 @@ Status:
 ## Segment 1 Foundation Plan
 
 Objective: make the app deployable, protected, database-backed, and navigable without starting Gmail implementation.
+
+Release status:
+
+- Segment 1 PR: `https://github.com/Adam-Li-611/networking-machine/pull/13`
+- Production merge SHA: `f0c088ad3f6302849eb7bbb2e0780c7417f4e7a5`
+- Production URL: `https://networking-machine.vercel.app`
+- Release version: `v0.1.0`
+- Status: shipped, with authenticated UI health check pending because the local environment does not have the production app password.
 
 Build scope:
 
@@ -102,15 +114,20 @@ Current test evidence:
 - Password gate signed-cookie helper check passed: valid signed cookie accepted, plain `ok` cookie rejected, wrong-password signature rejected.
 - ASCII check passed for Segment 1 edited files.
 - Gmail boundary search found only existing stubs and new placeholder/status copy; no OAuth, scopes, Gmail API calls, draft creation, scanner, or auto-send implementation was added.
+- Vercel production deployment for merge `f0c088ad3f6302849eb7bbb2e0780c7417f4e7a5` reported success.
+- Production root smoke check passed: unauthenticated `https://networking-machine.vercel.app/` redirects to `/login?next=%2F`.
+- Production password-gate smoke check passed: forged cookie `networking_machine_auth=ok` against `/settings` redirects to `/login?next=%2Fsettings`.
+- Production login page smoke check passed: login copy and metadata identify the app as a private AI outreach command center.
 - `npm run build` could not run locally because `npm` is not installed in this environment (`zsh: command not found: npm`).
 
 Exit criteria:
 
-- Segment 1 acceptance criteria pass.
+- Segment 1 acceptance criteria pass at the code and deployment level.
 - `STATUS.md` records test evidence.
 - `CHANGELOG.md` has `v0.1.0`.
 - `docs/VERSION_LOG.md` has `v0.1.0`.
-- `docs/DECISIONS.md` includes any new major choices made during foundation work.
+- `docs/DECISIONS.md` includes the signed password gate choice.
+- Remaining manual check before Segment 2: authenticate with the production app password and confirm Dashboard plus Settings system health load successfully.
 
 ## Meaningful Change Log
 
@@ -121,6 +138,9 @@ Exit criteria:
 - Replaced Settings with system health and Segment 1 gate status.
 - Hardened the password gate so middleware verifies a signed auth cookie instead of trusting a plain `ok` cookie value.
 - Recorded local verification evidence and package-manager blocker.
+- Merged Segment 1 foundation PR #13.
+- Verified production smoke checks for unauthenticated redirect and forged-cookie rejection.
+- Released Segment 1 as `v0.1.0` in `CHANGELOG.md` and `docs/VERSION_LOG.md`.
 - Created Segment 0 governance plan.
 - Created Segment 1 foundation plan.
 - Created local GitHub label and milestone manifests.

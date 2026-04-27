@@ -84,3 +84,17 @@ Consequences:
 - Meaningful changes update `STATUS.md`.
 - Major choices update this file.
 - Pull requests must include summary, files changed, tests, screenshots when UI changes, and version/log updates.
+
+## D-007: Password Gate Uses Signed Cookies
+
+Status: accepted
+
+Decision: Segment 1 protects private app routes with a server-verifiable signed auth cookie derived from `APP_PASSWORD`.
+
+Why: A plain cookie marker can be forged by a browser or script. The private single-user gate still needs a tamper-resistant session marker before Gmail, token storage, or recruiting data is added.
+
+Consequences:
+
+- Middleware verifies cookie format, timestamp, and HMAC signature before allowing private route access.
+- Changing `APP_PASSWORD` invalidates existing app sessions.
+- Future multi-user authentication can replace the password gate without relying on any unauthenticated cookie trust.

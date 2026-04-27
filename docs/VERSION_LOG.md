@@ -4,7 +4,7 @@ Networking Machine uses semantic-ish product versions tied to product capability
 
 ## Current Version
 
-`v0.0.0` Planning baseline
+`v0.1.0` Foundation deployable app
 
 ## Version Ladder
 
@@ -20,9 +20,40 @@ Networking Machine uses semantic-ish product versions tied to product capability
 
 ## Releases
 
+### `v0.1.0` Foundation Deployable App
+
+Status: shipped to production
+
+Released through:
+
+- PR: `https://github.com/Adam-Li-611/networking-machine/pull/13`
+- Merge SHA: `f0c088ad3f6302849eb7bbb2e0780c7417f4e7a5`
+- Production URL: `https://networking-machine.vercel.app`
+
+Included:
+
+- Deployable Next.js App Router foundation.
+- Password gate hardening with signed auth cookies.
+- Primary workflow routes for Dashboard, People, Campaigns, Draft Review, Gmail, Templates, Background, Calls, Lead Research, and Settings.
+- Settings system health page.
+- Gmail placeholder status only.
+
+Verified:
+
+- Production deploy succeeded on Vercel.
+- Unauthenticated production root redirects to login.
+- Forged plain `networking_machine_auth=ok` cookie no longer opens private routes.
+- Local signed-cookie helper check passed.
+- Primary route file smoke check passed.
+- Gmail boundary search found no Segment 2 behavior.
+
+Pending manual verification:
+
+- Authenticated Dashboard and Settings health need a production click-through with the real app password or a temporary verification method.
+
 ### `v0.0.0` Planning Baseline
 
-Status: active
+Status: released
 
 Included:
 
