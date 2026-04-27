@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Private personal CRM for finance recruiting and professional networking"
 };
 
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
